@@ -121,7 +121,7 @@ tomato-ai-greenhouse/
 ├── training/                   # 模型训练（待补充）
 ├── models/                     # 模型转换脚本
 │   ├── convert_qwen_rkllm.py   # Qwen2.5 → RKLLM 转换
-│   └── convert_qwen_w4a16_normal.py  # W4A16量化转换
+│   └── convert_qwen_w4a16_normal.py  #  W4A16量化转换
 ├── hardware/                    # 硬件设计
 │   └── README.md               # 接线图 + 引脚映射
 ├── docs/                       # 文档
