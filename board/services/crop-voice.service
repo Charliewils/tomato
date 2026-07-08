@@ -1,0 +1,14 @@
+[Unit]
+Description=Crop AI Voice Assistant (grounded LLM voice Q&A)
+After=crop-sensors.service
+
+[Service]
+WorkingDirectory=/userdata/voice
+Environment=PYTHONPATH=/userdata/voice/libs
+Environment=LD_LIBRARY_PATH=/userdata/llm/lib
+ExecStart=/usr/bin/python3 /userdata/voice/voice_daemon.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

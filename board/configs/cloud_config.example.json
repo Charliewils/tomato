@@ -1,0 +1,17 @@
+{
+    "backends": [
+        {
+            "name": "zhipu-free",
+            "endpoint": "https://open.bigmodel.cn/api/paas/v4",
+            "chat_path": "/chat/completions",
+            "model": "glm-4-flash",
+            "api_key": "你的智谱API_KEY"
+        },
+        {
+            "name": "qwen-free",
+            "endpoint": "https://dashscope.aliyuncs.com/compatible-mode",
+            "model": "qwen-turbo",
+            "api_key": "你的阿里百炼API_KEY"
+        }
+    ]
+}

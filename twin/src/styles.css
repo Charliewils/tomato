@@ -1,0 +1,178 @@
+/* ============================================================
+   作物AI 数字孪生 · Liquid Glass · 清露
+   明亮液态玻璃: 统一高光发丝边 + 漂移焦散 + 凹陷画布晕影 + 浮层层级
+   main.jsx 一次性引入; 组件布局仍走内联样式.
+   ============================================================ */
+
+:root {
+  --accent: #1f9d57;
+  --accent-deep: #147a44;
+  --sky: #2f9bd6;
+  --ink: #1c2b24;
+  --ink2: #54665d;
+  --ink3: #869389;
+  --hair: rgba(31,60,44,0.08);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+html {
+  background:
+    radial-gradient(58% 48% at 16% 4%, rgba(186,224,255,0.70) 0%, rgba(186,224,255,0) 52%),
+    radial-gradient(52% 46% at 90% 8%, rgba(255,240,206,0.62) 0%, rgba(255,240,206,0) 50%),
+    radial-gradient(60% 55% at 84% 96%, rgba(168,224,255,0.40) 0%, rgba(168,224,255,0) 55%),
+    radial-gradient(82% 72% at 30% 108%, rgba(190,232,204,0.72) 0%, rgba(190,232,204,0) 60%),
+    radial-gradient(125% 120% at 50% 50%, rgba(255,255,255,0) 58%, rgba(28,58,40,0.07) 100%),
+    linear-gradient(162deg, #eef7f0 0%, #e4eee7 52%, #dceae1 100%);
+  background-attachment: fixed;
+}
+body, #root { background: transparent; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  color: #1c2b24;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: tabular-nums;
+}
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* === 核心液态玻璃面板 ====================================== */
+.glass {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.54) 0%, rgba(255,255,255,0.34) 46%, rgba(236,247,240,0.42) 100%),
+    radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 60%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(120,150,134,0.26);
+  border-top-color: rgba(255,255,255,0.9);
+  border-radius: 22px;
+  box-shadow:
+    0 10px 30px rgba(31,60,44,0.12),
+    0 2px 8px rgba(31,60,44,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.92),
+    inset 0 0 0 0.5px rgba(255,255,255,0.5);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 顶缘镜面高光 — Apple 玻璃的标志 (仅描边, mask 抠出) */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.95) 0%,
+    rgba(255,255,255,0.30) 14%,
+    rgba(255,255,255,0) 34%,
+    rgba(255,255,255,0) 86%,
+    rgba(255,255,255,0.18) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* 缓慢漂移的焦散光 — “阳光穿过湿玻璃” */
+.glass::after {
+  content: "";
+  position: absolute;
+  top: -42%; left: -12%;
+  width: 60%; height: 84%;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(255,255,255,0.55), rgba(255,255,255,0) 70%);
+  filter: blur(16px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 1;
+  animation: sheenDrift 18s ease-in-out infinite alternate;
+}
+
+/* 浮动条 (顶栏/底栏) — 更强磨砂, 控制中心模块感 */
+.glass--chrome {
+  background: linear-gradient(180deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.60) 100%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  backdrop-filter: blur(32px) saturate(190%);
+}
+.glass--chrome::after { display: none; }
+
+/* 最高层级 — 3D 场景英雄面板浮于两侧之上 */
+.glass--float {
+  box-shadow:
+    0 26px 60px -22px rgba(28,58,40,0.34),
+    0 8px 22px -12px rgba(28,58,40,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.92),
+    inset 0 0 0 0.5px rgba(255,255,255,0.5);
+}
+
+/* 磨砂凹陷井 (摄像头/抓拍/KPI) */
+.glass-inset {
+  position: relative;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(31,60,44,0.08);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 3px rgba(31,60,44,0.10), inset 0 0 0 0.5px rgba(255,255,255,0.4);
+  overflow: hidden;
+}
+
+/* 3D 画布框: 把明亮日光场景“凹陷”进玻璃, 化解亮场景与磨砂的冲突 */
+.canvas-bezel {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.6),
+    inset 0 -44px 64px -30px rgba(28,58,40,0.20),
+    inset 0 2px 10px rgba(28,58,40,0.06);
+}
+.canvas-bezel::after {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 16%);
+}
+
+/* 悬停微浮 */
+.lift { transition: transform 320ms cubic-bezier(0.32,0.72,0,1), box-shadow 320ms cubic-bezier(0.32,0.72,0,1); }
+.lift:hover { transform: translateY(-1px); box-shadow: 0 16px 40px rgba(31,60,44,0.16), 0 4px 12px rgba(31,60,44,0.08), inset 0 1px 0 rgba(255,255,255,0.9), inset 0 0 0 0.5px rgba(255,255,255,0.45); }
+
+/* 可按压 */
+.press { transition: transform 140ms ease-out, background 160ms ease, box-shadow 200ms ease; }
+.press:active { transform: scale(0.96); }
+.press:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(31,157,87,0.28); }
+
+.dot-pulse { animation: pulse 2s ease-in-out infinite; }
+.breathe { animation: breathe 1.4s ease-in-out infinite; }
+
+.shimmer {
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s linear infinite;
+}
+
+.draw { transition: stroke-dashoffset 0.7s cubic-bezier(0.32,0.72,0,1); }
+.bar-fill { transition: width 0.6s cubic-bezier(0.32,0.72,0,1); }
+
+@keyframes sheenDrift { 0% { transform: translateX(0); } 100% { transform: translateX(38%); } }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.18); } }
+@keyframes breathe { 0%,100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 滑块 — 纤细磨砂 */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(31,60,44,0.18); border-radius: 980px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(31,60,44,0.30); }
+* { scrollbar-width: thin; scrollbar-color: rgba(31,60,44,0.18) transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  .glass::after, .dot-pulse, .breathe, .shimmer { animation: none !important; }
+  .glass::after { opacity: 0.45; }
+  .draw, .bar-fill, .lift, .press { transition: none !important; }
+}

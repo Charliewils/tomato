@@ -1,0 +1,12 @@
+[Unit]
+Description=作物AI执行器自动控制(风扇/水泵)
+After=network.target crop-sensors.service
+
+[Service]
+Type=simple
+ExecStart=/elf-env/bin/python3 /userdata/voice/actuator.py --daemon --interval 5
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

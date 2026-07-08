@@ -1,0 +1,11 @@
+[Unit]
+Description=Crop environment sensors (SCD41 CO2/temp/rh + VEML7700 lux) daemon
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/python3 /userdata/sensors.py --daemon --out /userdata/sensors.json
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

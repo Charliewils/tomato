@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=作物AI检测
+Name[zh_CN]=作物AI检测
+Comment=番茄病虫害检测与产量估算
+Exec=/root/demo/run_live.sh
+Icon=applications-science
+Terminal=false
+Categories=Education;
