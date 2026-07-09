@@ -270,7 +270,6 @@ adb shell bash /root/demo/run_live.sh
 ---
 
 ## 📹 演示视频
-视频已发布在【嵌入式芯片与系统设计大赛--基于边缘AI的番茄温室智能监测与控制系统】 https://www.bilibili.com/video/BV1L5MV6SEVY/?share_source=copy_web&vd_source=042107418a6d7cacf261f0ebb8438c8d
-
+视频已发布在【嵌入式芯片与系统设计大赛--基于AI的作物生长预测系统】 https://www.bilibili.com/video/BV1L5MV6SEVY/?share_source=copy_web&vd_source=042107418a6d7cacf261f0ebb8438c8d
 
 
