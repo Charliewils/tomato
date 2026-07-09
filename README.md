@@ -127,7 +127,7 @@ tomato-ai-greenhouse/
 ├── docs/                       # 文档
 │   ├── tech_report.md          # 英文技术报告
 │   └── tech_report_cn.md       # 中文技术报告
-└── videos/                     # 演示视频（自行上传）
+└── videos/                     # 演示视频
     └── README.md
 ```
 
