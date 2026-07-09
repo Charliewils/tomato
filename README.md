@@ -1,6 +1,6 @@
 # 🍅 Tomato AI Greenhouse
 
-> 基于边缘AI的番茄温室智能监测与控制系统  
+> 基于AI的作物生长预测系统  
 > RV1126B · YOLOv8 · LLM Agent · 数字孪生 · 全端侧离线闭环
 
 [![Platform](https://img.shields.io/badge/platform-RV1126B-blue)](https://www.rock-chips.com/)
